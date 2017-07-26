@@ -16,16 +16,16 @@ if($arrJson['events'][0]['message']['text'] == "สวัสดี"){
   $arrPostData['replyToken'] = $arrJson['events'][0]['replyToken'];
   $arrPostData['messages'][0]['type'] = "text";
   $arrPostData['messages'][0]['text'] = "สวัสดีครับผมคือ เพื่อนรักนักสุขภาพ";
-}else if($arrJson['events'][0]['message']['text'] == "ชื่ออะไร"){
+}else if($arrJson['events'][0]['message']['text'] == "กินเท่าไหร่น้ำหนักก็ไม่ขึ้นต้องทำอย่างไร"){
   $arrPostData = array();
   $arrPostData['replyToken'] = $arrJson['events'][0]['replyToken'];
   $arrPostData['messages'][0]['type'] = "text";
-  $arrPostData['messages'][0]['text'] = "ผมยังไม่มีชื่อนะ";
-}else if($arrJson['events'][0]['message']['text'] == "ทำอะไรได้บ้าง"){
+  $arrPostData['messages'][0]['text'] = "ต้องกินแบบคำนวนแคลอรี่ต่อวัน";
+}else if($arrJson['events'][0]['message']['text'] == "กินผลไม้แทนข้าวเช้าผอมจริงไหม"){
   $arrPostData = array();
   $arrPostData['replyToken'] = $arrJson['events'][0]['replyToken'];
   $arrPostData['messages'][0]['type'] = "text";
-  $arrPostData['messages'][0]['text'] = "ผมทำอะไรไม่ได้เลย คุณต้องสอนผมอีกเยอะ";
+  $arrPostData['messages'][0]['text'] = "ผอมจริง แต่มันไม่ดีต่อร่างกาย";
 }else{
   $arrPostData = array();
   $arrPostData['replyToken'] = $arrJson['events'][0]['replyToken'];
