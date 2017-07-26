@@ -26,6 +26,16 @@ if($arrJson['events'][0]['message']['text'] == "สวัสดี"){
   $arrPostData['replyToken'] = $arrJson['events'][0]['replyToken'];
   $arrPostData['messages'][0]['type'] = "text";
   $arrPostData['messages'][0]['text'] = "ผอมจริง แต่มันไม่ดีต่อร่างกาย";
+}else if($arrJson['events'][0]['message']['text'] == "ทำไมออกกำลังกายแล้วยังอ้วน"){
+  $arrPostData = array();
+  $arrPostData['replyToken'] = $arrJson['events'][0]['replyToken'];
+  $arrPostData['messages'][0]['type'] = "text";
+  $arrPostData['messages'][0]['text'] = "ใช้แคลอรี่ต่อวันน้อยกว่ารับเข้ามา";
+}else if($arrJson['events'][0]['message']['text'] == "ลดน้ำหนักอย่างไรไม่ให้เสียสุขภาพ"){
+  $arrPostData = array();
+  $arrPostData['replyToken'] = $arrJson['events'][0]['replyToken'];
+  $arrPostData['messages'][0]['type'] = "text";
+  $arrPostData['messages'][0]['text'] = "ลดโดยการคำนวนแคลอรี่ที่ใช้ต่อวันต่อวันและกินให้เพียงพอ";
 }else{
   $arrPostData = array();
   $arrPostData['replyToken'] = $arrJson['events'][0]['replyToken'];
