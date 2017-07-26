@@ -16,6 +16,11 @@ if($arrJson['events'][0]['message']['text'] == "สวัสดี"){
   $arrPostData['replyToken'] = $arrJson['events'][0]['replyToken'];
   $arrPostData['messages'][0]['type'] = "text";
   $arrPostData['messages'][0]['text'] = "สวัสดีครับผมคือ เพื่อนรักนักสุขภาพ";
+}else if($arrJson['events'][0]['message']['text'] == "ทำอะไรได้บ้าง"){
+  $arrPostData = array();
+  $arrPostData['replyToken'] = $arrJson['events'][0]['replyToken'];
+  $arrPostData['messages'][0]['type'] = "text";
+  $arrPostData['messages'][0]['text'] = "ผมสามารถตอบคำถามการออกกำลังกายและโภชนาการเบื่องต้นได้นะ";
 }else if($arrJson['events'][0]['message']['text'] == "กินเท่าไหร่น้ำหนักก็ไม่ขึ้นต้องทำอย่างไร"){
   $arrPostData = array();
   $arrPostData['replyToken'] = $arrJson['events'][0]['replyToken'];
