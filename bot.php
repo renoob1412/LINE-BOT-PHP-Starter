@@ -1,64 +1,76 @@
 <?php
- 
+
 $strAccessToken = "cFPukCUKa9CvkLUV0U3L5iYsuPSEsQGhBtgvF3h1LXUORtwTWEp+eUhukzSzly6DpijhrEtQpsYQ2wBa2VD9SYyO2Tf6qIi5BMJC1yumqK0+6StTfbDeOFTGvWKe/JMOpu7wtNihDaIM0vwV43K+oQdB04t89/1O/w1cDnyilFU=";
- 
+
 $content = file_get_contents('php://input');
 $arrJson = json_decode($content, true);
- 
+
 $strUrl = "https://api.line.me/v2/bot/message/reply";
- 
+
 $arrHeader = array();
 $arrHeader[] = "Content-Type: application/json";
 $arrHeader[] = "Authorization: Bearer {$strAccessToken}";
- 
-if($arrJson['events'][0]['message']['text'] == "สวัสดี"){
-  $arrPostData = array();
-  $arrPostData['replyToken'] = $arrJson['events'][0]['replyToken'];
-  $arrPostData['messages'][0]['type'] = "text";
-  $arrPostData['messages'][0]['text'] = "สวัสดีครับผมคือ เพื่อนรักนักสุขภาพ";
-}else if($arrJson['events'][0]['message']['text'] == "ทำอะไรได้บ้าง"){
-  $arrPostData = array();
-  $arrPostData['replyToken'] = $arrJson['events'][0]['replyToken'];
-  $arrPostData['messages'][0]['type'] = "text";
-  $arrPostData['messages'][0]['text'] = "ผมสามารถตอบคำถามการออกกำลังกายและโภชนาการเบื่องต้นได้นะ";
-}else if($arrJson['events'][0]['message']['text'] == "กินเท่าไหร่น้ำหนักก็ไม่ขึ้นต้องทำอย่างไร"){
-  $arrPostData = array();
-  $arrPostData['replyToken'] = $arrJson['events'][0]['replyToken'];
-  $arrPostData['messages'][0]['type'] = "text";
-  $arrPostData['messages'][0]['text'] = "ต้องกินแบบคำนวนแคลอรี่ต่อวัน";
-}else if($arrJson['events'][0]['message']['text'] == "กินผลไม้แทนข้าวเช้าผอมจริงไหม"){
-  $arrPostData = array();
-  $arrPostData['replyToken'] = $arrJson['events'][0]['replyToken'];
-  $arrPostData['messages'][0]['type'] = "text";
-  $arrPostData['messages'][0]['text'] = "ผอมจริง แต่มันไม่ดีต่อร่างกาย";
-}else if($arrJson['events'][0]['message']['text'] == "ทำไมออกกำลังกายแล้วยังอ้วน"){
-  $arrPostData = array();
-  $arrPostData['replyToken'] = $arrJson['events'][0]['replyToken'];
-  $arrPostData['messages'][0]['type'] = "text";
-  $arrPostData['messages'][0]['text'] = "ใช้แคลอรี่ต่อวันน้อยกว่ารับเข้ามา";
-}else if($arrJson['events'][0]['message']['text'] == "ลดน้ำหนักอย่างไรไม่ให้เสียสุขภาพ"){
-  $arrPostData = array();
-  $arrPostData['replyToken'] = $arrJson['events'][0]['replyToken'];
-  $arrPostData['messages'][0]['type'] = "text";
-  $arrPostData['messages'][0]['text'] = "ลดโดยการคำนวนแคลอรี่ที่ใช้ต่อวันต่อวันและกินให้เพียงพอ";
-}else{
-  $arrPostData = array();
-  $arrPostData['replyToken'] = $arrJson['events'][0]['replyToken'];
-  $arrPostData['messages'][0]['type'] = "text";
-  $arrPostData['messages'][0]['text'] = "ผมไม่เข้าใจคำสั่ง";
-}
- 
- 
-$ch = curl_init();
-curl_setopt($ch, CURLOPT_URL,$strUrl);
-curl_setopt($ch, CURLOPT_HEADER, false);
-curl_setopt($ch, CURLOPT_POST, true);
-curl_setopt($ch, CURLOPT_HTTPHEADER, $arrHeader);
-curl_setopt($ch, CURLOPT_POSTFIELDS, json_encode($arrPostData));
-curl_setopt($ch, CURLOPT_RETURNTRANSFER,true);
-curl_setopt($ch, CURLOPT_SSL_VERIFYPEER, false);
-$result = curl_exec($ch);
-curl_close ($ch);
- 
-?>
+$_msg = $arrJson['events'][0]['message']['text'];
 
+
+$api_key="<MLAB APIKEY>";
+$url = 'https://api.mlab.com/api/1/databases/duckduck/collections/linebot?apiKey='.$api_key.'';
+$json = file_get_contents('https://api.mlab.com/api/1/databases/duckduck/collections/linebot?apiKey='.$api_key.'&q={"question":"'.$_msg.'"}');
+$data = json_decode($json);
+$isData=sizeof($data);
+
+if (strpos($_msg, 'สอนเพื่อน') !== false) {
+  if (strpos($_msg, 'สอนเพื่อน') !== false) {
+    $x_tra = str_replace("สอนเพื่อน","", $_msg);
+    $pieces = explode("|", $x_tra);
+    $_question=str_replace("[","",$pieces[0]);
+    $_answer=str_replace("]","",$pieces[1]);
+    //Post New Data
+    $newData = json_encode(
+      array(
+        'question' => $_question,
+        'answer'=> $_answer
+      )
+    );
+    $opts = array(
+      'http' => array(
+          'method' => "POST",
+          'header' => "Content-type: application/json",
+          'content' => $newData
+       )
+    );
+    $context = stream_context_create($opts);
+    $returnValue = file_get_contents($url,false,$context);
+    $arrPostData = array();
+    $arrPostData['replyToken'] = $arrJson['events'][0]['replyToken'];
+    $arrPostData['messages'][0]['type'] = "text";
+    $arrPostData['messages'][0]['text'] = 'ขอบคุณที่สอนผม';
+  }
+}else{
+  if($isData >0){
+   foreach($data as $rec){
+    $arrPostData = array();
+    $arrPostData['replyToken'] = $arrJson['events'][0]['replyToken'];
+    $arrPostData['messages'][0]['type'] = "text";
+    $arrPostData['messages'][0]['text'] = $rec->answer;
+   }
+  }else{
+    $arrPostData = array();
+    $arrPostData['replyToken'] = $arrJson['events'][0]['replyToken'];
+    $arrPostData['messages'][0]['type'] = "text";
+    $arrPostData['messages'][0]['text'] = 'คุณสามารถสอนให้ฉลาดได้เพียงพิมพ์: สอนเพื่อน[คำถาม|คำตอบ]';
+  }
+}
+
+
+$channel = curl_init();
+curl_setopt($channel, CURLOPT_URL,$strUrl);
+curl_setopt($channel, CURLOPT_HEADER, false);
+curl_setopt($channel, CURLOPT_POST, true);
+curl_setopt($channel, CURLOPT_HTTPHEADER, $arrHeader);
+curl_setopt($channel, CURLOPT_POSTFIELDS, json_encode($arrPostData));
+curl_setopt($channel, CURLOPT_RETURNTRANSFER,true);
+curl_setopt($channel, CURLOPT_SSL_VERIFYPEER, false);
+$result = curl_exec($channel);
+curl_close ($channel);
+?>
